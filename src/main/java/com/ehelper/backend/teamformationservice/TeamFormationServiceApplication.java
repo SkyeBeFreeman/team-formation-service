@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TeamFormationServiceApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TeamFormationServiceApplication.class, args);
+		SpringApplication app = new SpringApplication(TeamFormationServiceApplication.class);
+		app.setWebEnvironment(true);
+		app.run(args);
 	}
 }
