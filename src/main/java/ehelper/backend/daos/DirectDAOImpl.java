@@ -1,8 +1,11 @@
 package ehelper.backend.daos;
 
+import ehelper.backend.entities.Direct;
 import ehelper.backend.repositories.DirectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 /**
  * Created by Skye on 2018/3/25.
@@ -14,12 +17,22 @@ public class DirectDAOImpl implements DirectDAO {
     private DirectRepository directRepository;
 
     @Override
-    public double findDirectByFromId(long fromId) {
-        return directRepository.findDirectByFromId(fromId).getRemark();
+    public List<Direct> findDirectsByFromId(long fromId) {
+        return directRepository.findDirectsByFromId(fromId);
+    }
+
+    @Override
+    public List<Direct> findDirectsByToId(long toId) {
+        return directRepository.findDirectsByToId(toId);
     }
 
     @Override
     public double findDirectByFromIdAndToId(long fromId, long toId) {
-        return directRepository.findDirectByFromIdAndToId(fromId, toId).getRemark();
+        Direct temp = directRepository.findDirectByFromIdAndToId(fromId, toId);
+        if (temp != null) {
+            return temp.getRemark();
+        } else {
+            return -1;
+        }
     }
 }

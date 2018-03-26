@@ -1,13 +1,17 @@
 package ehelper.backend.daos;
 
-import org.springframework.stereotype.Repository;
+import ehelper.backend.entities.Direct;
+
+import java.util.List;
 
 /**
  * Created by Skye on 2018/3/25.
  */
 public interface DirectDAO {
 
-    double findDirectByFromId(long fromId);
+    List<Direct> findDirectsByFromId(long fromId);
+
+    List<Direct> findDirectsByToId(long toId);
 
     double findDirectByFromIdAndToId(long fromId, long toId);
 
