@@ -9,7 +9,7 @@ import javax.persistence.Id;
  * Created by Skye on 2018/3/24.
  */
 @Entity
-public class Remark {
+public class Direct {
 
     @Id
     @GeneratedValue
@@ -24,10 +24,10 @@ public class Remark {
     @Column(nullable = false)
     private double remark;
 
-    public Remark() {
+    public Direct() {
     }
 
-    public Remark(long fromId, long toId, double remark) {
+    public Direct(long fromId, long toId, double remark) {
         this.fromId = fromId;
         this.toId = toId;
         this.remark = remark;
