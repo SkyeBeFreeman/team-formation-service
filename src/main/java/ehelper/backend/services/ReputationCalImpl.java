@@ -5,6 +5,7 @@ import ehelper.backend.daos.UserDAO;
 import ehelper.backend.entities.Direct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.stream.Collectors;
  * Created by Skye on 2018/3/26.
  */
 @Service
+@Transactional
 public class ReputationCalImpl implements ReputationCal {
 
     @Autowired

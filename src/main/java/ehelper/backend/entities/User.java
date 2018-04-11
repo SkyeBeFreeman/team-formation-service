@@ -6,7 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 /**
- * Created by Skye on 2018/3/23.
+ * Created by zhtian on 2018/3/23.
  */
 @Entity
 public class User {
@@ -42,18 +42,25 @@ public class User {
     @Column(nullable = false)
     private double latitude;
 
+    @Column(nullable = false)
+    private int isNew;
+
+    @Column(nullable = false)
+    private double leadership;
 
     public User() {
 
     }
 
-    public User(int sex, int age, int occupation, double rank, double longtitude, double latitude) {
+    public User(int sex, int age, int occupation, double rank, double longtitude, double latitude, int isNew, double leadership) {
         this.sex = sex;
         this.age = age;
         this.occupation = occupation;
         this.rank = rank;
         this.longtitude = longtitude;
         this.latitude = latitude;
+        this.isNew = isNew;
+        this.leadership = leadership;
     }
 
     public long getId() {
@@ -110,5 +117,36 @@ public class User {
 
     public void setLatitude(double latitude) {
         this.latitude = latitude;
+    }
+
+    public int getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(int isNew) {
+        this.isNew = isNew;
+    }
+
+    public double getLeadership() {
+        return leadership;
+    }
+
+    public void setLeadership(double leadership) {
+        this.leadership = leadership;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", sex=" + sex +
+                ", age=" + age +
+                ", occupation=" + occupation +
+                ", rank=" + rank +
+                ", longtitude=" + longtitude +
+                ", latitude=" + latitude +
+                ", isNew=" + isNew +
+                ", leadership=" + leadership +
+                '}';
     }
 }
