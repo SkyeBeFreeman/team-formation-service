@@ -32,7 +32,8 @@ public class TeamFormationImpl implements TeamFormation {
             if (i.getId() != x.getId()
                     && Math.abs(x.getLatitude() - i.getLatitude()) <= 100
                     && Math.abs(x.getLongtitude() - i.getLongtitude()) <= 100
-                    && reputationCal.calReputation(i.getId(), x.getId()) >= 3.5) {
+                    && (reputationCal.calReputation(i.getId(), x.getId()) >= 3.5
+                    || x.getIsNew() == 1)) {
                 result.add(x);
             }
         }
@@ -40,7 +41,12 @@ public class TeamFormationImpl implements TeamFormation {
     }
 
     @Override
-    public User chooseLeader(List<User> userList, User i) {
+    public User chooseLeader(List<User> oldList, User i) {
+
+        if (oldList.isEmpty()) {
+            return null;
+        }
+
         boolean isOld = false;
         if (i.getAge() >= 50) {
             isOld = true;
@@ -49,26 +55,26 @@ public class TeamFormationImpl implements TeamFormation {
         // 获取有符合技能的人群
         List<User> leaderList1 = new ArrayList<>();
         if (isOld) {
-            for (User x : userList) {
+            for (User x : oldList) {
                 if (x.getOccupation() == 0) {
                     leaderList1.add(x);
                 }
             }
             if (leaderList1.isEmpty()) {
-                for (User x : userList) {
+                for (User x : oldList) {
                     if (x.getOccupation() == 1) {
                         leaderList1.add(x);
                     }
                 }
             }
         } else {
-            for (User x : userList) {
+            for (User x : oldList) {
                 if (x.getOccupation() == 1) {
                     leaderList1.add(x);
                 }
             }
             if (leaderList1.isEmpty()) {
-                for (User x : userList) {
+                for (User x : oldList) {
                     if (x.getOccupation() == 0) {
                         leaderList1.add(x);
                     }
@@ -76,7 +82,7 @@ public class TeamFormationImpl implements TeamFormation {
             }
         }
         if (leaderList1.isEmpty()) {
-            leaderList1.addAll(userList);
+            leaderList1.addAll(oldList);
         }
         if (leaderList1.size() == 1) {
             return leaderList1.get(0);
@@ -85,7 +91,7 @@ public class TeamFormationImpl implements TeamFormation {
         // 获取领导力较高的用户
         List<User> leaderList2 = new ArrayList<>();
         for (User x : leaderList1) {
-            if (x.getLeadership() >= 3.5) {
+            if (x.getLeadership() >= 4) {
                 leaderList2.add(x);
             }
         }
@@ -159,7 +165,70 @@ public class TeamFormationImpl implements TeamFormation {
     }
 
     @Override
-    public List<User> secondFilter(List<User> userList, User leader) {
-        return null;
+    public List<User> secondFilter(List<User> oldList, List<User> newList, User leader, User i) {
+        boolean isOld = false;
+        if (i.getAge() >= 50) {
+            isOld = true;
+        }
+
+        // 构建最终队伍并加入队长
+        List<User> finalTeam = new ArrayList<>();
+        finalTeam.add(leader);
+
+        // 加入一名新用户（如果存在）
+        Random random = new Random();
+        if (!newList.isEmpty()) {
+            int index = random.nextInt(newList.size());
+            finalTeam.add(newList.get(index));
+            newList.remove(index);
+        }
+
+        while (finalTeam.size() < 5 && (!oldList.isEmpty() || !newList.isEmpty())) {
+            if (oldList.isEmpty()) {
+                int index = random.nextInt(newList.size());
+                finalTeam.add(newList.get(index));
+                newList.remove(index);
+            } else {
+                double maxRank = 0;
+                int maxIndex = 0;
+                for (int j = 0; j < oldList.size(); j++) {
+                    User x = oldList.get(j);
+                    double reputation = reputationFromATeam(finalTeam, x);
+                    double ageRank = (x.getAge() >= 20 && x.getAge() <= 50) ? 5 : 3;
+                    double skillRank = 0;
+                    if (isOld) {
+                        skillRank = (x.getOccupation() == 0) ? 4.5 : 4.2;
+                    } else {
+                        skillRank = (x.getOccupation() == 1) ? 4.5 : 4.2;
+                    }
+                    double rank = (reputation + ageRank + skillRank) / 3;
+                    if (rank > maxRank) {
+                        maxRank = rank;
+                        maxIndex = j;
+                    }
+                }
+                finalTeam.add(oldList.get(maxIndex));
+                oldList.remove(maxIndex);
+            }
+
+        }
+
+        return finalTeam;
     }
+
+    private double reputationFromATeam(List<User> finalTeam, User x) {
+        List<User> onlyOldList = new ArrayList<>();
+        for (User i : finalTeam) {
+            if (i.getIsNew() == 0) {
+                onlyOldList.add(i);
+            }
+        }
+        int length = onlyOldList.size();
+        double reputation = 0;
+        for (User i : onlyOldList) {
+            reputation += reputationCal.calReputation(i.getId(), x.getId());
+        }
+        return reputation / length;
+    }
+
 }

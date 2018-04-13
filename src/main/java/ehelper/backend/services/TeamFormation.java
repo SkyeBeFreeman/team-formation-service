@@ -11,8 +11,8 @@ public interface TeamFormation {
 
     List<User> firstFliter(User i);
 
-    User chooseLeader(List<User> userList, User i );
+    User chooseLeader(List<User> oldList, User i );
 
-    List<User> secondFilter(List<User> userList, User leader);
+    List<User> secondFilter(List<User> oldList, List<User> newList, User leader, User i);
 
 }

@@ -26,6 +26,11 @@ public class ReputationCalImpl implements ReputationCal {
 
     @Override
     public double calReputation(long fromId, long toId) {
+
+        if (userDAO.findOne(fromId).getIsNew() == 1) {
+            return -1;
+        }
+
         double rank = userDAO.findRankById(toId);
         double direct = directDAO.findDirectByFromIdAndToId(fromId, toId);
         double indirect = calIndirect(fromId, toId);
