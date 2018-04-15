@@ -75,8 +75,8 @@ public class TeamFormationController {
         return finalTeam;
     }
 
-    @PostMapping(value = "/create/noleader")
-    public List<User> getTeamWhenNoLeader(List<Long> okList, List<Long> noList, HttpSession session) {
+    @PostMapping(value = "/create/lose/people")
+    public List<User> getTeamWhenLosePeople(List<Long> okList, List<Long> noList, HttpSession session) {
 //        long userId = (long) session.getAttribute("userId");
 //        User i = userDAO.findOne(userId);
         User i = userDAO.findOne(5l);

@@ -26,12 +26,10 @@ public class TeamFormationImpl implements TeamFormation {
 
     @Override
     public List<User> firstFliter(User i) {
-        List<User> global = userDAO.findAll();
+        List<User> nearBy = userDAO.findNearByUsers(i.getLongtitude(), i.getLatitude());
         List<User> result = new ArrayList<>();
-        for (User x : global) {
+        for (User x : nearBy) {
             if (i.getId() != x.getId()
-                    && Math.abs(x.getLatitude() - i.getLatitude()) <= 100
-                    && Math.abs(x.getLongtitude() - i.getLongtitude()) <= 100
                     && (reputationCal.calReputation(i.getId(), x.getId()) >= 3.5
                     || x.getIsNew() == 1)) {
                 result.add(x);
@@ -197,9 +195,9 @@ public class TeamFormationImpl implements TeamFormation {
                     double ageRank = (x.getAge() >= 20 && x.getAge() <= 50) ? 5 : 3;
                     double skillRank = 0;
                     if (isOld) {
-                        skillRank = (x.getOccupation() == 0) ? 4.5 : 4.2;
+                        skillRank = (x.getOccupation() == 0) ? 4.5 : 4;
                     } else {
-                        skillRank = (x.getOccupation() == 1) ? 4.5 : 4.2;
+                        skillRank = (x.getOccupation() == 1) ? 4.5 : 4;
                     }
                     double rank = (reputation + ageRank + skillRank) / 3;
                     if (rank > maxRank) {

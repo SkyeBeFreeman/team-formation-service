@@ -26,6 +26,11 @@ public class UserDAOImpl implements UserDAO {
         return userRepository.findAll();
     }
 
+    @Override
+    public List<User> findNearByUsers(double longtitude, double latitude) {
+        return userRepository.findNearByUsers(longtitude, latitude);
+    }
+
     public double findRankById(long id) {
         return userRepository.findOne(id).getRank();
     }
