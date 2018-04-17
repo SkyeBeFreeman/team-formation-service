@@ -22,11 +22,6 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public List<User> findAll() {
-        return userRepository.findAll();
-    }
-
-    @Override
     public List<User> findNearByUsers(double longtitude, double latitude) {
         return userRepository.findNearByUsers(longtitude, latitude);
     }

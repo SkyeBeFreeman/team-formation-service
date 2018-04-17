@@ -30,8 +30,7 @@ public class TeamFormationImpl implements TeamFormation {
         List<User> result = new ArrayList<>();
         for (User x : nearBy) {
             if (i.getId() != x.getId()
-                    && (reputationCal.calReputation(i.getId(), x.getId()) >= 3.5
-                    || x.getIsNew() == 1)) {
+                    && (reputationCal.calReputation(i.getId(), x.getId()) >= 3.5 || x.getIsNew() == 1)) {
                 result.add(x);
             }
         }

@@ -75,6 +75,13 @@ public class TeamFormationController {
         return finalTeam;
     }
 
+    /**
+     * 如果缺少队员则重新组建
+     * @param okList
+     * @param noList
+     * @param session
+     * @return finalTeam
+     */
     @PostMapping(value = "/create/lose/people")
     public List<User> getTeamWhenLosePeople(List<Long> okList, List<Long> noList, HttpSession session) {
 //        long userId = (long) session.getAttribute("userId");

@@ -11,8 +11,6 @@ public interface UserDAO {
 
     User findOne(long id);
 
-    List<User> findAll();
-
     List<User> findNearByUsers(double longtitude, double latitude);
 
     double findRankById(long id);
